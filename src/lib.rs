@@ -104,7 +104,9 @@ impl<T> Complex<T> {
 }
 
 impl<T: Clone + Num> Complex<T> {
-    /// Returns imaginary unit
+    /// Returns the imaginary unit.
+    ///
+    /// See also [`Complex::I`].
     #[inline]
     pub fn i() -> Self {
         Self::new(T::zero(), T::one())
@@ -1176,6 +1178,9 @@ impl<T: Clone + Num> Zero for Complex<T> {
 impl<T: ConstOne + ConstZero> Complex<T> {
     /// A constant `Complex` 1.
     pub const ONE: Self = Self::new(T::ONE, T::ZERO);
+
+    /// A constant `Complex` _i_, the imaginary unit.
+    pub const I: Self = Self::new(T::ZERO, T::ONE);
 }
 
 impl<T: Clone + Num + ConstOne + ConstZero> ConstOne for Complex<T> {
