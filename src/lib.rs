@@ -30,7 +30,7 @@ use core::str::FromStr;
 #[cfg(feature = "std")]
 use std::error::Error;
 
-use num_traits::{Inv, MulAdd, Num, One, Pow, Signed, Zero};
+use num_traits::{ConstOne, ConstZero, Inv, MulAdd, Num, One, Pow, Signed, Zero};
 
 use num_traits::float::FloatCore;
 #[cfg(any(feature = "std", feature = "libm"))]
@@ -104,7 +104,9 @@ impl<T> Complex<T> {
 }
 
 impl<T: Clone + Num> Complex<T> {
-    /// Returns imaginary unit
+    /// Returns the imaginary unit.
+    ///
+    /// See also [`Complex::I`].
     #[inline]
     pub fn i() -> Self {
         Self::new(T::zero(), T::one())
@@ -1146,6 +1148,15 @@ impl<T: Clone + Num> Rem<T> for Complex<T> {
 real_arithmetic!(usize, u8, u16, u32, u64, u128, isize, i8, i16, i32, i64, i128, f32, f64);
 
 // constants
+impl<T: ConstZero> Complex<T> {
+    /// A constant `Complex` 0.
+    pub const ZERO: Self = Self::new(T::ZERO, T::ZERO);
+}
+
+impl<T: Clone + Num + ConstZero> ConstZero for Complex<T> {
+    const ZERO: Self = Self::ZERO;
+}
+
 impl<T: Clone + Num> Zero for Complex<T> {
     #[inline]
     fn zero() -> Self {
@@ -1162,6 +1173,18 @@ impl<T: Clone + Num> Zero for Complex<T> {
         self.re.set_zero();
         self.im.set_zero();
     }
+}
+
+impl<T: ConstOne + ConstZero> Complex<T> {
+    /// A constant `Complex` 1.
+    pub const ONE: Self = Self::new(T::ONE, T::ZERO);
+
+    /// A constant `Complex` _i_, the imaginary unit.
+    pub const I: Self = Self::new(T::ZERO, T::ONE);
+}
+
+impl<T: Clone + Num + ConstOne + ConstZero> ConstOne for Complex<T> {
+    const ONE: Self = Self::ONE;
 }
 
 impl<T: Clone + Num> One for Complex<T> {
