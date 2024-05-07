@@ -1006,7 +1006,7 @@ impl<T: Clone + Num + Neg<Output = T>> Inv for Complex<T> {
 
     #[inline]
     fn inv(self) -> Self::Output {
-        (&self).inv()
+        Complex::inv(&self)
     }
 }
 
@@ -1015,7 +1015,7 @@ impl<'a, T: Clone + Num + Neg<Output = T>> Inv for &'a Complex<T> {
 
     #[inline]
     fn inv(self) -> Self::Output {
-        self.inv()
+        Complex::inv(self)
     }
 }
 
@@ -1390,7 +1390,6 @@ where
     }
 }
 
-#[allow(deprecated)] // `trim_left_matches` and `trim_right_matches` since 1.33
 fn from_str_generic<T, E, F>(s: &str, from: F) -> Result<Complex<T>, ParseComplexError<E>>
 where
     F: Fn(&str) -> Result<T, E>,
@@ -1412,8 +1411,8 @@ where
         // ignore '+'/'-' if part of an exponent
         if (c == b'+' || c == b'-') && !(p == b'e' || p == b'E') {
             // trim whitespace around the separator
-            a = &s[..=i].trim_right_matches(char::is_whitespace);
-            b = &s[i + 2..].trim_left_matches(char::is_whitespace);
+            a = s[..=i].trim_end_matches(char::is_whitespace);
+            b = s[i + 2..].trim_start_matches(char::is_whitespace);
             neg_b = c == b'-';
 
             if b.is_empty() || (neg_b && b.starts_with('-')) {
