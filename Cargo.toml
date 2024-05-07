@@ -24,7 +24,7 @@ optional = true
 version = "1"
 
 [dependencies.num-traits]
-version = "0.2.11"
+version = "0.2.18"
 default-features = false
 features = ["i128"]
 
