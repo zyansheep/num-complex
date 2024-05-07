@@ -1006,7 +1006,7 @@ impl<T: Clone + Num + Neg<Output = T>> Inv for Complex<T> {
 
     #[inline]
     fn inv(self) -> Self::Output {
-        (&self).inv()
+        Complex::inv(&self)
     }
 }
 
@@ -1015,7 +1015,7 @@ impl<'a, T: Clone + Num + Neg<Output = T>> Inv for &'a Complex<T> {
 
     #[inline]
     fn inv(self) -> Self::Output {
-        self.inv()
+        Complex::inv(self)
     }
 }
 
