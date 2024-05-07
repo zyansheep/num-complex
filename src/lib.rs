@@ -92,11 +92,42 @@ pub struct Complex<T> {
     pub im: T,
 }
 
+/// Alias for a [`Complex<f32>`]
 pub type Complex32 = Complex<f32>;
+
+/// Create a new [`Complex<f32>`] with arguments that can convert [`Into<f32>`].
+///
+/// ```
+/// use num_complex::{c32, Complex32};
+/// assert_eq!(c32(1u8, 2), Complex32::new(1.0, 2.0));
+/// ```
+///
+/// Note: ambiguous integer literals in Rust will [default] to `i32`, which does **not** implement
+/// `Into<f32>`, so a call like `c32(1, 2)` will result in a type error. The example above uses a
+/// suffixed `1u8` to set its type, and then the `2` can be inferred as the same type.
+///
+/// [default]: https://doc.rust-lang.org/reference/expressions/literal-expr.html#integer-literal-expressions
+#[inline]
+pub fn c32<T: Into<f32>>(re: T, im: T) -> Complex32 {
+    Complex::new(re.into(), im.into())
+}
+
+/// Alias for a [`Complex<f64>`]
 pub type Complex64 = Complex<f64>;
 
+/// Create a new [`Complex<f64>`] with arguments that can convert [`Into<f64>`].
+///
+/// ```
+/// use num_complex::{c64, Complex64};
+/// assert_eq!(c64(1, 2), Complex64::new(1.0, 2.0));
+/// ```
+#[inline]
+pub fn c64<T: Into<f64>>(re: T, im: T) -> Complex64 {
+    Complex::new(re.into(), im.into())
+}
+
 impl<T> Complex<T> {
-    /// Create a new Complex
+    /// Create a new `Complex`
     #[inline]
     pub const fn new(re: T, im: T) -> Self {
         Complex { re, im }
