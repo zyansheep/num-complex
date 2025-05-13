@@ -31,6 +31,7 @@ FEATURES=(bytecheck bytemuck libm rand rkyv/size_64 serde)
 echo "Testing supported features: ${FEATURES[*]}"
 
 cargo generate-lockfile
+check_version 1.63.0 || cargo update -p libm --precise 0.2.9
 
 set -x
 
